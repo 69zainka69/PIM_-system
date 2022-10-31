@@ -259,7 +259,7 @@ $i = 0;
 		type: "GET",
 		data: {
 		    searchcode: searchproduct,
-		    page: {{isset($_GET['page']) ? $_Get['page'] : 1}},
+		    page: {{isset($_GET['page']) ? $_GET['page'] : 1}},
 		},
 		headers:{
 		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('contnt')
