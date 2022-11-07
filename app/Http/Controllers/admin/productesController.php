@@ -95,14 +95,15 @@ class ProductesController extends Controller
         }
 
         $brand_id = $product[0]->brand_id; 
-
+$image = null;
+$images = null;
         $asset = Productasset::Where('product_id', $prod_id)->Where('is_main_image', 1)->first();
         if(isset($asset['asset_id']) && $asset['asset_id'] != null){
             $as_id = $asset['asset_id'];
             $img = Asset::Where('id', $as_id)->first();
             $img_name = $img->name;
             $image = $img_name;
-        
+        }
         $assets = Productasset::Where('product_id', $prod_id)->get();
         $eid = 0;
         foreach($assets as $asse){
@@ -115,10 +116,7 @@ class ProductesController extends Controller
 	    $images[$eid]['id'] = $as_id;
             $eid++;
         }
-    }else{
-        $image = null;
-        $images = null;
-    }
+    
         $brandi = Brand::Where('id', $brand_id)->get();
         $brand = $brandi[0]->name;
         $brands = Brand::all();
@@ -264,6 +262,18 @@ class ProductesController extends Controller
         $product->producer = $request->producer;
         $product->save();
         return redirect()->back()->withSuccess('Групe закупщиків успішно змінено');
+    }
+    if (isset($request->arhive)) {
+        $product = product::where('mpn', $id)->first();
+        $product->deleted = '1';
+        $product->save();
+        return redirect()->back()->withSuccess('Номенклатуру переесено до архіву');
+    }
+    if (isset($request->noarhive)) {
+        $product = product::where('mpn', $id)->first();
+        $product->deleted = '0';
+        $product->save();
+        return redirect()->back()->withSuccess('Номенклатуру переесено до архіву');
     }
     }
 

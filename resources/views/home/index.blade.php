@@ -8,28 +8,45 @@
 @endsection
 @section('content')
 
+
 <p>Менеджер - {{ Auth::user()->name }}</p> 
-<p>Група закупників - {{Auth::user()->group_id}}</p> 
 <form method="POST" action="{{ route('edituser.update', Auth::user()->name)}}">
 @csrf
 @method('PUT')
-<select name ="grupss">
+<p>Група закупників - <select class="select_send_ajax" name ="grupss">
 <option>{{ Auth::user()->group_id }}</option>
 @foreach($producer as $grups)
 <option value="{{$grups}}">{{$grups}}</option>
 @endforeach
-</select>
-<button class="btn btn-primary action" type="submit">Змінити групу закупників</button>
+</select></p>
 </form>
+
+
 <form method="POST" action="{{ route('edituser.update', Auth::user()->name)}} ">
 @csrf
 @method('PUT')
-<select name="price">
-<option value="all">Усі номенклатури</option>
-<option value="price">Тільки номенклатури з ціною</option>
+<p>Асортиментна група - 
+<select class="select_send_ajaxy" name="price">
+  <option value="{{Auth::user()->price}}">
+    @if(Auth::user()->price == 'price')
+    Асортимент+Під замовлення
+    @endif
+    @if(Auth::user()->price == 'asortment')
+    АССОРТИМЕНТ
+    @endif
+    @if(Auth::user()->price == 'all')
+    Весь список
+    @endif
+  </option>
+<option value="price">Асортимент+Під замовлення</option> <!--(всі номенклатури, які містять ціну продажу оптову або роздрібну) тут будуть підтягуватись і номенклатури асортименту і під замовлення і реалізації і розпродажу і т.д-->
+<option value="asortment">Асортимент</option> <!--(лише номенклатури з позначкою Асортимент) -->
+<option value="all">Весь список</option> <!--(відображаються всі номенклатури, окрім вже перенесених в Архів раніше) -->
 </select>
-<button class="btn btn-primary action" type="submit">Додати цей фільтр ціни</button>
+</p>
 </form>
+
+
+
 
 <p>Номенклатур - {{ $count }}</p>
 
@@ -293,5 +310,16 @@
 </div></div>
 </div>
 </div>
-
+<script>
+  $('.select_send_ajax').on('change', function () {
+    console.log('ddd');
+      this.form.submit();
+  });
+    </script>
+    <script>
+  $('.select_send_ajaxy').on('change', function () {
+    console.log('ddd');
+      this.form.submit();
+  });
+    </script>
 @endsection

@@ -34,16 +34,16 @@ class ProductController extends Controller
         $search = $request->searchproduct;
         $product = Product::where('name', 'like', "%".$search."%")->paginate($paginate);
         $allcount = count(Product::all());
-    }elseif(isset($request->searchcode)){
+    }   elseif(isset($request->searchcode)){
         $search = $request->searchcode;
         $product = Product::where('id', 'like', "%".$search."%")->paginate($paginate);
         $allcount = count(Product::all());
     }
-elseif(isset($request->searchbrand)){
+        elseif(isset($request->searchbrand)){
         $search = $request->searchbrand;
         $product = Product::where('brand_id', $search)->paginate($paginate);
         $allcount = count(Product::where('brand_id', $search)->get());
-    }elseif(isset($request->searchzak)){
+    }   elseif(isset($request->searchzak)){
         $search = $request->searchzak;
         $product = Product::where('producer', $search)->paginate($paginate);
         $allcount = count(Product::where('producer', $search)->get());

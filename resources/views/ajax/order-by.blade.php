@@ -1,106 +1,49 @@
-<table class="table fixed-header-table hidden table-scrolled" style="position: fixed; left: 419.986px; top: 47px; right: 0px; z-index: 1; width: 1176px;">
-    <thead>
-        <tr>
-            <th width="40" data-name="r-checkbox" style="width: 36px;">
-                <span class="select-all-container"><input type="checkbox" class="select-all fixed"></span>
-                <div class="btn-group checkbox-dropdown">
-                    <a class="btn btn-link btn-sm dropdown-toggle" data-toggle="dropdown">
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="javascript:" data-action="selectAllResult">Select All Results</a></li>
-                    </ul>
-                </div>
-            </th>
-            <th style="width: 444px;">
-                    <div>
-                        <a href="javascript:" class="sort" data-name="name">
-                                Назва
-                        </a>
-                                <span>↑</span>
-                    </div>
-            </th>
-            <th style="width: 116px;">
-                        Основне зображення
-            </th>
-            <th style="width: 116px;">
-                    <div>
-                        <a href="javascript:" class="sort" data-name="catalog">
-                                Товарна група
-                        </a>
-                    </div>
-            </th>
-            <th style="width: 116px;">
-                        Бренд
-            </th>
-            <th style="width: 116px;">
-                    <div>
-                        <a href="javascript:" class="sort" data-name="sku">
-                                код 1С
-                        </a>
-                    </div>
-            </th>
-            <th style="width: 116px;">
-                    <div>
-                        <a href="javascript:" class="sort" data-name="isActive">
-                                Активний
-                        </a>
-                    </div>
-            </th>
-            <th style="width: 116px;">
-                        Ціна
-            </th>
-            <th style="width: 25px;">
-                        
-            </th>
-        </tr>
-    </thead>
-</table>
+
 <table class="table full-table table-scrolled">
     <thead>
         <tr>
             
             <th>
                 <div>
-                        <a  class="sort" data-name="name">Назва</a>
+                        <a  class="sort" data-name="name">Код</a>
                        
                 </div>
             </th>
             <th>
                 <div>
-                            Основне зображення
+                           Назва товару
                 </div>
             </th>
             <th>
                 <div>
-                        <a class="sort" data-name="catalog">Товарна група</a>
+                        <a class="sort" data-name="catalog">Бренд</a>
                 </div>
             </th>
             <th>
                 <div>
-                    Бренд
+                    Група закупників
                 </div>
             </th>
             <th>
                 <div>
-                        <a  class="sort" data-name="sku">код 1С</a>
+                        <a  class="sort" data-name="sku">Ціна</a>
                         
                 </div>
             </th>
             <th>
                 <div>
-                        <a class="sort" data-name="isActive">код номенклатури</a>
+                        <a class="sort" data-name="isActive">Асортиментна група</a>
                         
                 </div>
             </th>
             <th>
                 <div>
-                            Ціна
+                    Зображення
                 </div>
             </th>
             <th>
                 <div>
-                            Група закупників
+                    Товарна група
                 </div>
             </th>
             <th width="25" style="">
@@ -128,16 +71,29 @@
 
         <tr style="background-color: {{$style}}" class="list-row">
        
-
-
-
+            <td class="cell" data-name="isActive">
+                <a href="{{ route('productes.show', $item['mpn'])}}" class="link" data-id="{{$item->mpn}}" title="{{$item->mpn}}">{{$item->mpn}}</a>
+            </td>
 
 <td class="cell" data-name="name">
     
 <a href="{{ route('productes.show', $item['mpn'])}}" class="link" data-id="{{$item->mpn}}" title="{{$item->name}}">{{$item->name}}</a>
 
 </td>
-
+<td class="cell" data-name="tag">
+  
+    {{ $brandis[mb_strtolower($item->brand_id)]}}
+</td>
+<td class="cell" data-name="taskStatus">
+    {{$item->producer}}
+    </td>
+    
+    <td class="cell" data-name="taskStatus">
+        {{$item->price}}
+        </td>
+        <td class="cell" data-name="sku">
+            <span class="pre-label">{{$item->tag}}</span>
+            </td>
 
 <td class="cell" data-name="mainImage">
     @if(isset($images[$item->mpn])) <div class="attachment-preview">
@@ -154,29 +110,12 @@
 </td>
 
 
-<td class="cell" data-name="tag">
-  
-    {{ $brandis[mb_strtolower($item->brand_id)]}}
-</td>
 
 
-<td class="cell" data-name="sku">
-<span class="pre-label">{{$item->sku}}</span>
-
-</td>
 
 
-<td class="cell" data-name="isActive">
-    <span class="pre-label">{{$item->mpn}}</span>
-</td>
 
 
-<td class="cell" data-name="taskStatus">
-{{$item->price}}
-</td>
-<td class="cell" data-name="taskStatus">
-    {{$item->producer}}
-    </td>
 
 <td class="cell fixed-button" data-name="buttons" style="left: 1060.01px;">
 <div class="list-row-buttons btn-group pull-right">
@@ -184,8 +123,13 @@
     <span class="fas fa-ellipsis-v"></span>
 </button>
 <ul class="dropdown-menu pull-right">
-    <li><a href="{{ route('productes.show', $item['mpn'])}}" class="action" data-action="quickView" data-id="SCRD-1-64-930">Редагувати</a></li>
-    <li><a href="{{ route('productes.destroy', $item['mpn'])}}" class="action" data-action="quickRemove" data-id="SCRD-1-64-930">Вилучити</a></li>
+    <li><button><a href="{{ route('productes.show', $item['mpn'])}}" class="action" data-action="quickView" data-id="SCRD-1-64-930">Редагувати</a></button></li>
+    <form method="POST" action="{{ route('productes.update', $item['mpn'])}}">
+        @csrf
+	    @method('PUT')
+            <input type="text" name="arhive" id="arhive" value="1" style="display:none;">
+        <li><button class="btn" type="submit" class="action" data-action="quickRemove" data-id="SCRD-1-64-930">Зробити архівним</button></li>
+    </form>
 </ul>
 </div>
 

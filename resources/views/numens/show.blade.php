@@ -131,6 +131,10 @@ $i = 0;
                         <label class="control-label" data-name="brand"><span class="label-text">Бренд</span></label>
                             <p>{{$brand}}</p>
                     </div>
+                    <div class="cell col-sm-6 form-group" data-name="ean"><a href="javascript:" class="pull-right inline-edit-link hidden" style="margin-left: 7px"><span class="fas fa-pencil-alt fa-sm"></span></a>
+                        <label class="control-label" data-name="ean"><span class="label-text">код ТН ЗЕД</span></label>
+                            <p>{{ $product[0]['ean']}}</p>
+                    </div>
             </div>
             <div class="row">
                     <div class="cell col-sm-6 form-group" data-name="sku"><a href="javascript:" class="pull-right inline-edit-link hidden" style="margin-left: 7px"><span class="fas fa-pencil-alt fa-sm"></span></a>
@@ -145,23 +149,20 @@ $i = 0;
                         <label class="control-label" data-name="mpn"><span class="label-text">Група закупників</span></label>
                             <p>{{ $product[0]['producer']}}</p>
                     </div>
+                    <div class="cell col-sm-6 form-group" data-name="mpn"><a href="javascript:" class="pull-right inline-edit-link hidden" style="margin-left: 7px"><span class="fas fa-pencil-alt fa-sm"></span></a>
+                        <label class="control-label" data-name="mpn"><span class="label-text">Асортиментна група</span></label>
+                        <p>{{$product[0]->tag}}</p>
+                    </div>
             </div>
             <div class="row">
-                    <div class="cell col-sm-6 form-group" data-name="ean"><a href="javascript:" class="pull-right inline-edit-link hidden" style="margin-left: 7px"><span class="fas fa-pencil-alt fa-sm"></span></a>
-                        <label class="control-label" data-name="ean"><span class="label-text">код ТН ЗЕД</span></label>
-                            <p>{{ $product[0]['ean']}}</p>
-                    </div>
-                         </div>
-                     <div class="row">
                     <div class="cell col-sm-6 form-group" data-name="uvp"><a href="javascript:" class="pull-right inline-edit-link hidden" style="margin-left: 7px"><span class="fas fa-pencil-alt fa-sm"></span></a>
-                        <label class="control-label" data-name="uvp"><span class="label-text">Ціна покупки</span></label>
+                        <label class="control-label" data-name="uvp"><span class="label-text">Ціна Розн</span></label>
                             <p>{{$product[0]['price']}}</p>
 
                     </div>
-                     </div>
-                    <div class="row">
+                    
                     <div class="cell col-sm-6 form-group" data-name="price"><a href="javascript:" class="pull-right inline-edit-link hidden" style="margin-left: 7px"><span class="fas fa-pencil-alt fa-sm"></span></a>
-                        <label class="control-label" data-name="price"><span class="label-text">Акційна ціна</span></label>
+                        <label class="control-label" data-name="price"><span class="label-text">Ціна Розн-Prote</span></label>
                     <p>{{ $product[0]['uvp']}}</p>
                     </div>
                     <div class="col-sm-6"></div>
@@ -169,7 +170,7 @@ $i = 0;
             <div class="row">
                     <div class="cell col-sm-6 form-group" data-name="amount"><a href="javascript:" class="pull-right inline-edit-link hidden" style="margin-left: 7px"><span class="fas fa-pencil-alt fa-sm"></span></a>
                         <label class="control-label" data-name="amount"><span class="label-text">Кіл-ть</span></label>
-        		    <p>{{$product[0]->amount}}</з>
+        		    <p>{{$product[0]->amount}}</p>
                     </div>
                     <div class="cell col-sm-6 form-group" data-name="catalog"><a href="javascript:" class="pull-right inline-edit-link hidden" style="margin-left: 7px"><span class="fas fa-pencil-alt fa-sm"></span></a>
                         <label class="control-label" data-name="catalog"><span class="label-text">Товарна група</span></label>
@@ -179,13 +180,28 @@ $i = 0;
             <div class="row">
                     <div class="cell col-sm-6 form-group" data-name="productStatus"><a href="javascript:" class="pull-right inline-edit-link hidden" style="margin-left: 7px"><span class="fas fa-pencil-alt fa-sm"></span></a>
                         <label class="control-label" data-name="productStatus"><span class="label-text">Статус продукту</span><span class="required-sign"> *</span></label>
-                        <div class="field" data-name="productStatus"><span class="label colored-enum" style="color:#000;background-color:#58B368;font-size:100%;font-weight:normal;border:1px solid #4ea95e">
-                    Готово
-                        </span>
+                        <div class="field" data-name="catalog">
+                            <form>
+                                @csrf
+	                            @method('PUT')
+                            <select name="arhive">
+                                <option value="{{$product[0]->deleted}}">
+                                @php
+                                    if($product[0]->deleted<1){
+                             echo 'Готово</option><option value="1">Архівний</option>';
+                            }if($product[0]->deleted>0){
+                             echo   'Архівний</option><option value="0"><Готово/option>';
+                            }
+                                @endphp
+                                </select>
+                            </form>
                         </div>
                     </div>
+                    <div class="cell col-sm-6 form-group" data-name="productStatus"><a href="javascript:" class="pull-right inline-edit-link hidden" style="margin-left: 7px"><span class="fas fa-pencil-alt fa-sm"></span></a>
+                        <label class="control-label" data-name="productStatus"><span class="label-text">Наявність продукту</span><span class="required-sign"> *</span></label>
+                        <div class="field" data-name="catalog">{{$product[0]->product_status}}</div>
+                    </div>
             </div>
-        
             <iframe style="width:100%; height:1050px;" src="{{ route('editdescr.show', $product[0]->mpn) }}" height="1050">
             </iframe>
          
@@ -553,7 +569,7 @@ $i = 0;
 	@method('PUT')
     <input type="text" name="glav" value="on" style="display:none;">
     <input type="text" name="prod" value="{{$product[0]['mpn']}}" style="display:none;">
-    <button class="btn" type="submit>">Зробити головним</button>
+    <button class="btn" type="submit">Зробити головним</button>
     </form>
 </li>
 

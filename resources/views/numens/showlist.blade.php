@@ -27,6 +27,7 @@ $i = 0;
             </button>
         </p>
         <p>Пошук за групою закупників: <select id="search_zak" name="search_zak">
+          <option>{{ Auth::user()->group_id }}</option>
           @foreach($producer as $itemproduc)
           @if($itemproduc!='')
   <option value="{{$itemproduc}}">{{$itemproduc}}</option>

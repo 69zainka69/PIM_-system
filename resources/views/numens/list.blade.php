@@ -27,6 +27,7 @@ $i = 0;
             </button>
         </p>
         <p>Пошук за групою закупників: <select id="search_zak" name="search_zak">
+            <option>{{ Auth::user()->group_id }}</option>
                     @foreach($producer as $itemproduc)
                     @if($itemproduc!='')
             <option value="{{$itemproduc}}">{{$itemproduc}}</option>
@@ -219,7 +220,7 @@ $i = 0;
 		type: "GET",
 		data: {
 		    searchcode: searchproduct,
-		    page: {{isset($_GET['page']) ? $_Get['page'] : 1}},
+		    page: {{isset($_GET['page']) ? $_GET['page'] : 1}},
 		},
 		headers:{
 		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('contnt')
